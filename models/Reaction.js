@@ -1,4 +1,4 @@
-const { Schema, Types } = require('mongoose');
+const { Schema } = require('mongoose');
 const User = require('./User');
 
 reactionSchema = new Schema({
@@ -7,11 +7,14 @@ reactionSchema = new Schema({
 		required: true,
 		maxLength: 280,
 	},
-	userName: User.userName,
+	userName: {
+		type: String,
+		required: true,
+	},
 	createdAt: {
 		type: Date,
 		default: Date.now,
 	},
 });
-const Reaction = model('reaction', reactionSchema);
-module.exports = Reaction;
+// const Reaction = model('reaction', reactionSchema);
+module.exports = reactionSchema;

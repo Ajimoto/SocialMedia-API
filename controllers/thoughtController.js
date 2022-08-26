@@ -2,7 +2,7 @@ const { Thought } = require('../models');
 module.exports = {
 	// Get all thoughts
 	getThoughts(req, res) {
-		Course.find()
+		Thought.find()
 			.then((thoughts) => res.json(thoughts))
 			.catch((err) => res.status(500).json(err));
 	},
@@ -32,5 +32,33 @@ module.exports = {
 
 			.then(() => res.json({ message: 'Thought Deleted' }))
 			.catch((err) => res.status(500).json(err));
+	},
+	createReaction(req, res) {
+		Thought.findOneAndUpdate(
+			{ _id: req.params.thoughtId },
+			{ $addToSet: { reactions: req.body } },
+			{ runValidators: true, new: true }
+		)
+			.then((thought) => {
+				if (thought) {
+					return res.json(thought);
+				}
+				return res.status(404).json({ message: 'No thought with that ID' });
+			})
+			.catch((err) => res.status(500).send(err));
+	},
+	deleteReaction(req, res) {
+		Thought.findOneAndUpdate(
+			{ _id: req.params.thoughtId },
+			{ $pull: { reactions: { _id: req.body.reactionId } } },
+			{ runValidators: true, new: true }
+		)
+			.then((thought) => {
+				if (thought) {
+					return res.json(thought);
+				}
+				return res.status(404).json({ message: 'No thought with that ID' });
+			})
+			.catch((err) => res.status(500).send(err));
 	},
 };
