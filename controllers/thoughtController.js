@@ -27,11 +27,10 @@ module.exports = {
 			});
 	},
 	// Delete a thought
-	deletethought(req, res) {
-		thought
-			.findOneAndDelete({ _id: req.params.thoughtId })
+	deleteThought(req, res) {
+		Thought.findOneAndDelete({ _id: req.params.thoughtId })
 
-			.then(() => res.json({ message: 'Course and students deleted!' }))
+			.then(() => res.json({ message: 'Thought Deleted' }))
 			.catch((err) => res.status(500).json(err));
 	},
 };
